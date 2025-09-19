@@ -1,0 +1,75 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { prisma } from '@/lib/db';
+import { SearchFilters } from '@/types';
+import { enhanceSearchQuery } from '@/lib/gemini';
+import { buildSearchQuery } from '@/lib/search';
+
+export async function GET(request: NextRequest) {
+  try {
+    const { searchParams } = new URL(request.url);
+    
+    const filters: SearchFilters = {
+      query: searchParams.get('q') || undefined,
+      script: (searchParams.get('script') as 'english' | 'devanagari' | 'perso-arabic' | 'all') || 'all',
+      availableOnline: searchParams.get('online') ? searchParams.get('online') === 'true' : undefined,
+      collectionLocation: searchParams.get('location') || undefined,
+      author: searchParams.get('author') || undefined,
+    };
+
+    const page = parseInt(searchParams.get('page') || '1');
+    const limit = parseInt(searchParams.get('limit') || '20');
+    const offset = (page - 1) * limit;
+    const fuzzy = searchParams.get('fuzzy') === 'true';
+
+    // Enhance search query with AI if available
+    let enhancedQuery = filters.query;
+    if (filters.query && process.env.GEMINI_API_KEY) {
+      try {
+        enhancedQuery = await enhanceSearchQuery(filters.query, filters.script);
+      } catch (error) {
+        console.error('Query enhancement failed:', error);
+        // Continue with original query
+      }
+    }
+
+    // Build the where clause using enhanced search
+    const where = buildSearchQuery({
+      query: enhancedQuery || filters.query,
+      script: filters.script,
+      availableOnline: filters.availableOnline,
+      collectionLocation: filters.collectionLocation,
+      author: filters.author,
+      fuzzy,
+    });
+
+    // Execute the search
+    const [books, total] = await Promise.all([
+      prisma.book.findMany({
+        where,
+        orderBy: [
+          { availableOnline: 'desc' }, // Online books first
+          { createdAt: 'desc' },
+        ],
+        skip: offset,
+        take: limit,
+      }),
+      prisma.book.count({ where }),
+    ]);
+
+    return NextResponse.json({
+      books,
+      total,
+      page,
+      limit,
+      hasMore: offset + books.length < total,
+      fuzzy,
+    });
+  } catch (error) {
+    console.error('Search error:', error);
+    return NextResponse.json(
+      { error: 'Failed to search books' },
+      { status: 500 }
+    );
+  }
+}
+

@@ -1,0 +1,123 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Book {
+  id                    Int      @id @default(autoincrement())
+  originalId            Int      @unique // Original ID from CSV
+  titleEnglish          String?
+  titleDevanagari       String?
+  titlePersoArabic      String?
+  authorEnglish         String?
+  authorDevanagari      String?
+  authorPersoArabic     String?
+  collectionLocation    String?
+  address               String?
+  otherDetails          String?
+  imageUrl              String?
+  availableOnline       Boolean  @default(false)
+  onlineUrl             String?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  
+  // Search and transliteration fields
+  searchVector          String?  // For full-text search
+  transliterationData   Json?    // Store transliteration mappings
+  
+  // AI features (optional)
+  summary               String?
+  embeddings            Float[]  // For semantic search
+  
+  @@map("books")
+  @@index([availableOnline])
+  @@index([collectionLocation])
+  @@index([searchVector])
+}
+
+model Author {
+  id                Int      @id @default(autoincrement())
+  nameEnglish       String?
+  nameDevanagari    String?
+  namePersoArabic   String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  // Search vector for author names
+  searchVector      String?
+  
+  @@map("authors")
+  @@index([searchVector])
+}
+
+model Collection {
+  id          Int      @id @default(autoincrement())
+  name        String
+  location    String?
+  address     String?
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("collections")
+}
+
+model ImportLog {
+  id          Int      @id @default(autoincrement())
+  fileName    String
+  recordCount Int
+  status      String   // 'pending', 'processing', 'completed', 'failed'
+  errors      Json?
+  startedAt   DateTime @default(now())
+  completedAt DateTime?
+  
+  @@map("import_logs")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  name      String?
+  role      String   @default("user") // 'admin', 'editor', 'user'
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  teams     UserTeam[]
+  
+  @@map("users")
+}
+
+model Team {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  members     UserTeam[]
+  
+  @@map("teams")
+}
+
+model UserTeam {
+  id     Int @id @default(autoincrement())
+  userId Int
+  teamId Int
+  role   String @default("member") // 'admin', 'editor', 'member'
+  
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  team   Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  
+  @@unique([userId, teamId])
+  @@map("user_teams")
+}
