@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { 
-  LogOut, Edit, Trash2, Plus, Search, BookOpen, Eye, EyeOff
+  LogOut, Edit, Trash2, Plus, Search, BookOpen, Eye
 } from 'lucide-react';
 
 interface Book {

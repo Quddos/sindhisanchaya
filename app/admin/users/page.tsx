@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { 
-  LogOut, Edit, Trash2, Plus, Search, Users, UserPlus, Shield, UserCheck
+  LogOut, Edit, Trash2, Search, Users, UserPlus, Shield, UserCheck
 } from 'lucide-react';
 
 interface User {

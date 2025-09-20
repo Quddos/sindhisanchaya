@@ -101,8 +101,8 @@ export function generateSearchTerms(query: string): string[] {
   return [...new Set(terms)]; // Remove duplicates
 }
 
-export function buildSearchQuery(options: SearchOptions): any {
-  const { query, script, availableOnline, collectionLocation, author, fuzzy } = options;
+export function buildSearchQuery(options: SearchOptions): Record<string, unknown> {
+  const { query, availableOnline, collectionLocation, author, fuzzy } = options;
   
   if (!query) {
     return {};
@@ -110,7 +110,7 @@ export function buildSearchQuery(options: SearchOptions): any {
   
   const searchTerms = fuzzy ? generateSearchTerms(query) : [query];
   
-  const where: any = {
+  const where: Record<string, unknown> = {
     OR: []
   };
   

@@ -1,6 +1,6 @@
 import { prisma } from './db';
 import { createSearchVector } from './transliteration';
-import { generateBookSummary, generateEmbeddings } from './gemini';
+// import { generateBookSummary, generateEmbeddings } from './gemini';
 import { ImportStatus } from '@/types';
 
 export interface CSVBookRecord {
