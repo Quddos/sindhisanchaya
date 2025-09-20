@@ -11,7 +11,7 @@ interface BookDetailsModalProps {
 }
 
 export default function BookDetailsModal({ book, isOpen, onClose }: BookDetailsModalProps) {
-  const [aiSummary, setAiSummary] = useState<string | null>(null);
+  const [aiSummary, setAiSummary] = useState<string | null>(book.summary || null);
   const [loadingSummary, setLoadingSummary] = useState(false);
   const [summaryError, setSummaryError] = useState<string | null>(null);
 
@@ -48,7 +48,7 @@ export default function BookDetailsModal({ book, isOpen, onClose }: BookDetailsM
     setSummaryError(null);
     
     try {
-      const response = await fetch(`/api/admin/books/${book.id}/summary`, {
+      const response = await fetch(`/api/books/${book.id}/summary`, {
         method: 'POST',
       });
       
@@ -144,11 +144,16 @@ export default function BookDetailsModal({ book, isOpen, onClose }: BookDetailsM
                   className="w-full bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
                 >
                   {loadingSummary ? (
-                    <Loader2 className="w-4 h-4 animate-spin" />
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      Generating...
+                    </>
                   ) : (
-                    <Sparkles className="w-4 h-4" />
+                    <>
+                      <Sparkles className="w-4 h-4" />
+                      {aiSummary ? 'Regenerate AI Summary' : 'Generate AI Summary'}
+                    </>
                   )}
-                  {aiSummary ? 'Regenerate AI Summary' : 'Generate AI Summary'}
                 </button>
               </div>
             </div>
