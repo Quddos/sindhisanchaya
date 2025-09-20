@@ -108,18 +108,18 @@ export default function Home() {
                     Our platform brings together <span className="font-semibold text-blue-600">40,000+ books</span> from 
                     classical poetry to modern prose, spanning centuries of literary excellence.
                   </p>
-                  <div className="flex flex-wrap justify-center gap-4 mt-4">
-                    <div className="flex items-center bg-white rounded-full px-4 py-2 shadow-sm">
-                      <Search className="w-4 h-4 text-green-600 mr-2" />
-                      <span className="text-sm font-medium text-gray-700">AI-Powered Search</span>
+                  <div className="flex flex-nowrap justify-center gap-2 sm:gap-4 mt-4 overflow-x-auto">
+                    <div className="flex items-center bg-white rounded-full px-2 sm:px-4 py-2 shadow-sm whitespace-nowrap">
+                      <Search className="w-4 h-4 text-green-600 mr-1 sm:mr-2" />
+                      <span className="text-xs sm:text-sm font-medium text-gray-700">AI-Powered Search</span>
                     </div>
-                    <div className="flex items-center bg-white rounded-full px-4 py-2 shadow-sm">
-                      <Sparkles className="w-4 h-4 text-purple-600 mr-2" />
-                      <span className="text-sm font-medium text-gray-700">Smart Summaries</span>
+                    <div className="flex items-center bg-white rounded-full px-2 sm:px-4 py-2 shadow-sm whitespace-nowrap">
+                      <Sparkles className="w-4 h-4 text-purple-600 mr-1 sm:mr-2" />
+                      <span className="text-xs sm:text-sm font-medium text-gray-700">Smart Summaries</span>
                     </div>
-                    <div className="flex items-center bg-white rounded-full px-4 py-2 shadow-sm">
-                      <Zap className="w-4 h-4 text-yellow-600 mr-2" />
-                      <span className="text-sm font-medium text-gray-700">Multi-Script Support</span>
+                    <div className="flex items-center bg-white rounded-full px-2 sm:px-4 py-2 shadow-sm whitespace-nowrap">
+                      <Zap className="w-4 h-4 text-yellow-600 mr-1 sm:mr-2" />
+                      <span className="text-xs sm:text-sm font-medium text-gray-700">Multi-Script Support</span>
                     </div>
                   </div>
                 </div>
