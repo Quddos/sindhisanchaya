@@ -104,15 +104,33 @@ export function generateSearchTerms(query: string): string[] {
 export function buildSearchQuery(options: SearchOptions): Record<string, unknown> {
   const { query, availableOnline, collectionLocation, author, fuzzy } = options;
   
+  const where: Record<string, unknown> = {};
+  
+  // If no query is provided, we still need to apply filters
   if (!query) {
-    return {};
+    // Apply filters even without a search query
+    if (availableOnline !== undefined) {
+      where.availableOnline = availableOnline;
+    }
+    
+    if (collectionLocation) {
+      where.collectionLocation = { contains: collectionLocation, mode: 'insensitive' };
+    }
+    
+    if (author) {
+      where.OR = [
+        { authorEnglish: { contains: author, mode: 'insensitive' } },
+        { authorDevanagari: { contains: author, mode: 'insensitive' } },
+        { authorPersoArabic: { contains: author, mode: 'insensitive' } },
+      ];
+    }
+    
+    return where;
   }
   
   const searchTerms = fuzzy ? generateSearchTerms(query) : [query];
   
-  const where: Record<string, unknown> = {
-    OR: []
-  };
+  where.OR = [];
   
   // Add search conditions for each term
   searchTerms.forEach(term => {

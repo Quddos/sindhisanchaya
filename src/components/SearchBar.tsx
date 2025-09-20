@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Search, Filter, X } from 'lucide-react';
+import { Search, Filter, X, BookOpen } from 'lucide-react';
 import { SearchFilters } from '@/types';
 
 interface SearchBarProps {
@@ -66,6 +66,17 @@ export default function SearchBar({ onSearch, loading = false }: SearchBarProps)
             }`}
           >
             <Filter className="w-5 h-5" />
+          </button>
+          <button
+            onClick={() => {
+              setQuery('');
+              setFilters({ script: 'all' });
+              onSearch({ script: 'all' });
+            }}
+            className="px-4 py-4 bg-green-600 text-white hover:bg-green-700 transition-colors"
+            title="Show all books"
+          >
+            <BookOpen className="w-5 h-5" />
           </button>
           <button
             onClick={handleSearch}

@@ -10,6 +10,8 @@ import { BookOpen, Users, MapPin, Globe, Sparkles, Archive, Search, Zap } from '
 export default function Home() {
   const [searchResults, setSearchResults] = useState<SearchResult | null>(null);
   const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [currentFilters, setCurrentFilters] = useState<SearchFilters>({});
   const [stats, setStats] = useState({
     totalBooks: 0,
     onlineBooks: 0,
@@ -33,8 +35,10 @@ export default function Home() {
     }
   };
 
-  const handleSearch = async (filters: SearchFilters) => {
+  const handleSearch = async (filters: SearchFilters, page: number = 1) => {
     setLoading(true);
+    setCurrentPage(page);
+    setCurrentFilters(filters);
     try {
       const params = new URLSearchParams();
       if (filters.query) params.append('q', filters.query);
@@ -43,6 +47,8 @@ export default function Home() {
       if (filters.collectionLocation) params.append('location', filters.collectionLocation);
       if (filters.author) params.append('author', filters.author);
       if (filters.fuzzy !== undefined) params.append('fuzzy', filters.fuzzy.toString());
+      params.append('page', page.toString());
+      params.append('limit', '20');
 
       const response = await fetch(`/api/search?${params.toString()}`);
       if (response.ok) {
@@ -54,6 +60,10 @@ export default function Home() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handlePageChange = (newPage: number) => {
+    handleSearch(currentFilters, newPage);
   };
 
   return (
@@ -163,11 +173,81 @@ export default function Home() {
             </div>
             
             {searchResults.books.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {searchResults.books.map((book) => (
-                  <BookCard key={book.id} book={book} />
-                ))}
-              </div>
+              <>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                  {searchResults.books.map((book) => (
+                    <BookCard key={book.id} book={book} />
+                  ))}
+                </div>
+                
+                {/* Pagination */}
+                {searchResults.total > 20 && (
+                  <div className="mt-8 flex justify-center">
+                    <div className="flex items-center space-x-2">
+                      {/* First Page */}
+                      <button
+                        onClick={() => handlePageChange(1)}
+                        disabled={currentPage === 1}
+                        className="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-l-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        First
+                      </button>
+                      
+                      {/* Previous Page */}
+                      <button
+                        onClick={() => handlePageChange(currentPage - 1)}
+                        disabled={currentPage === 1}
+                        className="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        Previous
+                      </button>
+                      
+                      {/* Page Numbers */}
+                      {(() => {
+                        const totalPages = Math.ceil(searchResults.total / 20);
+                        const startPage = Math.max(1, currentPage - 2);
+                        const endPage = Math.min(totalPages, currentPage + 2);
+                        const pages = [];
+                        
+                        for (let i = startPage; i <= endPage; i++) {
+                          pages.push(
+                            <button
+                              key={i}
+                              onClick={() => handlePageChange(i)}
+                              className={`px-3 py-2 text-sm font-medium border ${
+                                i === currentPage
+                                  ? 'text-blue-600 bg-blue-50 border-blue-300'
+                                  : 'text-gray-500 bg-white border-gray-300 hover:bg-gray-50'
+                              }`}
+                            >
+                              {i}
+                            </button>
+                          );
+                        }
+                        return pages;
+                      })()}
+                      
+                      {/* Next Page */}
+                      <button
+                        onClick={() => handlePageChange(currentPage + 1)}
+                        disabled={currentPage >= Math.ceil(searchResults.total / 20)}
+                        className="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        Next
+                      </button>
+                      
+                      {/* Last Page */}
+                      <button
+                        onClick={() => handlePageChange(Math.ceil(searchResults.total / 20))}
+                        disabled={currentPage >= Math.ceil(searchResults.total / 20)}
+                        className="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-r-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        Last
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </>
             ) : (
               <div className="text-center py-12">
                 <BookOpen className="w-16 h-16 text-gray-400 mx-auto mb-4" />
@@ -175,6 +255,18 @@ export default function Home() {
                 <p className="text-gray-600">Try adjusting your search criteria</p>
               </div>
             )}
+          </div>
+        )}
+
+        {/* Browse All Books Button */}
+        {!searchResults && (
+          <div className="mt-12 text-center">
+            <button
+              onClick={() => handleSearch({}, 1)}
+              className="bg-blue-600 text-white px-8 py-3 rounded-lg text-lg font-medium hover:bg-blue-700 transition-colors"
+            >
+              Browse All Books ({stats.totalBooks.toLocaleString()})
+            </button>
           </div>
         )}
 
@@ -186,17 +278,32 @@ export default function Home() {
               <div className="bg-white rounded-lg shadow-md p-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">Classical Literature</h3>
                 <p className="text-gray-600 mb-4">Explore timeless Sindhi poetry and prose from renowned authors</p>
-                <button className="text-blue-600 hover:text-blue-800 font-medium">Browse Collection →</button>
+                <button 
+                  onClick={() => handleSearch({ collectionLocation: 'Classical' }, 1)}
+                  className="text-blue-600 hover:text-blue-800 font-medium"
+                >
+                  Browse Collection →
+                </button>
               </div>
               <div className="bg-white rounded-lg shadow-md p-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">Religious Texts</h3>
                 <p className="text-gray-600 mb-4">Sacred texts and spiritual literature in Sindhi</p>
-                <button className="text-blue-600 hover:text-blue-800 font-medium">Browse Collection →</button>
+                <button 
+                  onClick={() => handleSearch({ collectionLocation: 'Religious' }, 1)}
+                  className="text-blue-600 hover:text-blue-800 font-medium"
+                >
+                  Browse Collection →
+                </button>
               </div>
               <div className="bg-white rounded-lg shadow-md p-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">Modern Works</h3>
                 <p className="text-gray-600 mb-4">Contemporary Sindhi literature and academic works</p>
-                <button className="text-blue-600 hover:text-blue-800 font-medium">Browse Collection →</button>
+                <button 
+                  onClick={() => handleSearch({ collectionLocation: 'Modern' }, 1)}
+                  className="text-blue-600 hover:text-blue-800 font-medium"
+                >
+                  Browse Collection →
+                </button>
               </div>
             </div>
           </div>

@@ -42,10 +42,13 @@ export async function GET(request: NextRequest) {
       fuzzy,
     });
 
+    // If no query is provided, show all books (for browsing)
+    const finalWhere = Object.keys(where).length === 0 ? {} : where;
+
     // Execute the search
     const [books, total] = await Promise.all([
       prisma.book.findMany({
-        where,
+        where: finalWhere,
         orderBy: [
           { availableOnline: 'desc' }, // Online books first
           { createdAt: 'desc' },
@@ -53,7 +56,7 @@ export async function GET(request: NextRequest) {
         skip: offset,
         take: limit,
       }),
-      prisma.book.count({ where }),
+      prisma.book.count({ where: finalWhere }),
     ]);
 
     return NextResponse.json({
