@@ -3,9 +3,9 @@
 import { useState } from 'react';
 import { Book } from '@/types';
 import { ExternalLink, MapPin, User, Calendar, BookOpen, Sparkles } from 'lucide-react';
-import Image from 'next/image';
-import { Buffer } from 'buffer';
+import SafeImage from './SafeImage';
 import BookDetailsModal from './BookDetailsModal';
+import { useAutoScrapeCover } from '@/hooks/useAutoScrapeCover';
 
 interface BookCardProps {
   book: Book;
@@ -13,6 +13,7 @@ interface BookCardProps {
 
 export default function BookCard({ book }: BookCardProps) {
   const [showModal, setShowModal] = useState(false);
+  const { coverImage, isScraping } = useAutoScrapeCover(book);
   const getDisplayTitle = () => {
     // Prioritize English title, fallback to others if English is not meaningful
     if (book.titleEnglish && book.titleEnglish.trim() && !book.titleEnglish.includes('?')) {
@@ -42,12 +43,13 @@ export default function BookCard({ book }: BookCardProps) {
   };
 
   const getCoverImage = () => {
-    if (!book.imageUrl) {
+    if (!coverImage) {
       // Generate SVG cover for books without images
       return generateSVGCover(getDisplayTitle(), getDisplayAuthor(), book.availableOnline);
     }
-    return book.imageUrl;
+    return coverImage;
   };
+
 
   const generateSVGCover = (title: string, author: string, isOnline: boolean) => {
     const gradientColors = isOnline 
@@ -109,15 +111,14 @@ export default function BookCard({ book }: BookCardProps) {
     <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 overflow-hidden">
       {/* Book Cover */}
       <div className="aspect-[2/3] bg-gray-100 relative">
-        <Image
+        <SafeImage
           src={getCoverImage()}
           alt={getDisplayTitle()}
           fill
           className="object-cover"
-          onError={(e) => {
-            const target = e.target as HTMLImageElement;
-            target.src = '/placeholder-book.svg';
-          }}
+          fallbackTitle={getDisplayTitle()}
+          fallbackAuthor={getDisplayAuthor()}
+          isOnline={book.availableOnline}
         />
         {book.availableOnline && (
           <div className="absolute top-2 right-2 bg-blue-500 text-white px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1">
@@ -129,6 +130,12 @@ export default function BookCard({ book }: BookCardProps) {
           <div className="absolute top-2 right-2 bg-green-500 text-white px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1">
             <MapPin className="w-3 h-3" />
             Physical
+          </div>
+        )}
+        {isScraping && (
+          <div className="absolute top-2 left-2 bg-orange-500 text-white px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1">
+            <div className="w-3 h-3 border border-white border-t-transparent rounded-full animate-spin"></div>
+            Loading...
           </div>
         )}
       </div>
@@ -191,6 +198,7 @@ export default function BookCard({ book }: BookCardProps) {
             <Sparkles className="w-4 h-4" />
             View Details & AI Summary
           </button>
+          
         </div>
       </div>
       

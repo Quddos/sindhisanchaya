@@ -1,10 +1,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import SearchBar from '@/components/SearchBar';
 import BookCard from '@/components/BookCard';
 import { SearchFilters, SearchResult } from '@/types';
-import { BookOpen, Users, MapPin, Globe } from 'lucide-react';
+import { BookOpen, Users, MapPin, Globe, Sparkles, Archive, Search, Zap } from 'lucide-react';
 
 export default function Home() {
   const [searchResults, setSearchResults] = useState<SearchResult | null>(null);
@@ -60,6 +61,22 @@ export default function Home() {
       {/* Header */}
       <header className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          {/* Navigation */}
+          <nav className="flex justify-between items-center mb-6">
+            <div className="flex items-center space-x-8">
+              <Link href="/" className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
+                <img src="/logo.svg" alt="SindhiSanchaya" className="h-8" />
+              </Link>
+            </div>
+            <div className="flex items-center space-x-6">
+              <Link href="/about" className="text-gray-600 hover:text-blue-600 transition-colors">
+                About
+              </Link>
+              <Link href="/copyright" className="text-gray-600 hover:text-blue-600 transition-colors">
+                Copyright
+              </Link>
+            </div>
+          </nav>
           <div className="text-center">
             <h1 className="text-4xl font-bold text-gray-900 mb-2">
               SindhiSanchaya
@@ -67,6 +84,37 @@ export default function Home() {
             <p className="text-lg text-gray-600 mb-6">
               Discover and explore the rich collection of Sindhi literature
             </p>
+            
+            {/* Animated Digital Archive Description */}
+            <div className="max-w-4xl mx-auto mb-8">
+              <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-6 border border-blue-200">
+                <div className="flex items-center justify-center mb-4">
+                  <Archive className="w-8 h-8 text-blue-600 mr-3 animate-pulse" />
+                  <h2 className="text-2xl font-bold text-gray-800">Digital Literature Archive</h2>
+                </div>
+                <div className="text-center space-y-3">
+                  <p className="text-gray-700 text-lg leading-relaxed">
+                    Welcome to the world&apos;s most comprehensive digital archive of Sindhi literature. 
+                    Our platform brings together <span className="font-semibold text-blue-600">40,000+ books</span> from 
+                    classical poetry to modern prose, spanning centuries of literary excellence.
+                  </p>
+                  <div className="flex flex-wrap justify-center gap-4 mt-4">
+                    <div className="flex items-center bg-white rounded-full px-4 py-2 shadow-sm">
+                      <Search className="w-4 h-4 text-green-600 mr-2" />
+                      <span className="text-sm font-medium text-gray-700">AI-Powered Search</span>
+                    </div>
+                    <div className="flex items-center bg-white rounded-full px-4 py-2 shadow-sm">
+                      <Sparkles className="w-4 h-4 text-purple-600 mr-2" />
+                      <span className="text-sm font-medium text-gray-700">Smart Summaries</span>
+                    </div>
+                    <div className="flex items-center bg-white rounded-full px-4 py-2 shadow-sm">
+                      <Zap className="w-4 h-4 text-yellow-600 mr-2" />
+                      <span className="text-sm font-medium text-gray-700">Multi-Script Support</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
             
             {/* Stats */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto">

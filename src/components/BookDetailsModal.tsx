@@ -93,22 +93,26 @@ export default function BookDetailsModal({ book, isOpen, onClose }: BookDetailsM
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Book Cover */}
             <div className="space-y-4">
-              <div className="aspect-[2/3] bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg shadow-lg relative overflow-hidden">
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-white p-4">
-                  <h3 className="text-lg font-bold text-center mb-2 leading-tight">
+              <div className={`aspect-[2/3] max-w-[200px] mx-auto rounded-lg shadow-lg relative overflow-hidden ${
+                book.availableOnline 
+                  ? 'bg-gradient-to-br from-blue-500 to-blue-700' 
+                  : 'bg-gradient-to-br from-green-500 to-green-700'
+              }`}>
+                <div className="absolute inset-0 flex flex-col items-center justify-center text-white p-3">
+                  <h3 className="text-sm font-bold text-center mb-1 leading-tight">
                     {getDisplayTitle()}
                   </h3>
-                  <p className="text-sm text-center opacity-90">
+                  <p className="text-xs text-center opacity-90">
                     {getDisplayAuthor()}
                   </p>
                 </div>
                 {book.availableOnline && (
-                  <div className="absolute top-2 right-2 bg-green-500 text-white px-2 py-1 rounded-full text-xs font-medium">
+                  <div className="absolute top-2 right-2 bg-blue-500 text-white px-2 py-1 rounded-full text-xs font-medium">
                     Online
                   </div>
                 )}
                 {!book.availableOnline && (
-                  <div className="absolute top-2 right-2 bg-orange-500 text-white px-2 py-1 rounded-full text-xs font-medium">
+                  <div className="absolute top-2 right-2 bg-green-500 text-white px-2 py-1 rounded-full text-xs font-medium">
                     Physical
                   </div>
                 )}
