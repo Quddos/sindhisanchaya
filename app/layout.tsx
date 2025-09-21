@@ -17,8 +17,6 @@ export const metadata: Metadata = {
   description: "Discover and explore the rich collection of Sindhi literature. Search through thousands of books in English, Devanagari, and Perso-Arabic scripts.",
   keywords: ["Sindhi", "books", "literature", "catalog", "search", "Devanagari", "Perso-Arabic"],
   authors: [{ name: "SindhiSanchaya Team" }],
-  viewport: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no",
-  themeColor: "#3B82F6",
   manifest: "/manifest.json",
   icons: {
     icon: "/favicon.svg",
@@ -41,6 +39,14 @@ export const metadata: Metadata = {
     title: "SindhiSanchaya - Sindhi Books Catalog",
     description: "Discover and explore the rich collection of Sindhi literature",
   },
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  themeColor: "#8B4513", // Updated to match brown theme
 };
 
 export default function RootLayout({

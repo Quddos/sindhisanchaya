@@ -5,9 +5,9 @@ import { BookOpen, Users, Globe, Heart, Award, Target, Lightbulb, Shield, Search
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-50">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b">
+      <header className="bg-white shadow-sm border-b border-amber-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Navigation */}
           <nav className="flex justify-between items-center mb-8">
@@ -17,30 +17,31 @@ export default function AboutPage() {
               </Link>
             </div>
             <div className="flex items-center space-x-6">
-              <Link href="/" className="text-gray-600 hover:text-blue-600 transition-colors">
+              <Link href="/" className="text-amber-700 hover:text-amber-900 transition-colors">
                 Home
               </Link>
-              <Link href="/about" className="text-blue-600 font-medium">
+              <Link href="/about" className="text-amber-900 font-medium">
                 About
               </Link>
-              <Link href="/copyright" className="text-gray-600 hover:text-blue-600 transition-colors">
+              <Link href="/copyright" className="text-amber-700 hover:text-amber-900 transition-colors">
                 Copyright
               </Link>
             </div>
           </nav>
           <div className="text-center">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">
-              About SindhiSanchaya
+            <h1 className="text-4xl font-bold text-amber-900 mb-4">
+              About Sindhi Sanchaya
             </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Preserving and sharing the rich heritage of Sindhi literature for future generations
+            <p className="text-lg text-amber-700 italic mb-4">
+              A Project Funded by J P Narayan National Centre for Excellence in the Humanities
             </p>
             <div className="mt-6 max-w-4xl mx-auto">
-              <p className="text-gray-700 leading-relaxed">
-                SindhiSanchaya is a comprehensive digital archive dedicated to preserving, cataloging, and making accessible 
-                the vast treasure trove of Sindhi literature. Our mission is to ensure that the rich cultural heritage of 
-                Sindhi language and literature remains accessible to scholars, researchers, students, and literature 
-                enthusiasts worldwide.
+              <p className="text-amber-800 leading-relaxed text-lg">
+                Sindhi Sanchaya seeks to put seekers of information in touch with the right online and offline resources where books can be traced. 
+                Some archival work on Sindhi literature is available on different websites such as websites of individual authors or on general 
+                archive websites without any consolidation of information. Sindhi Sanchaya aspires to consolidate this information and draw traffic 
+                to these resources and contribute to their usage for further research. Its metadata can be of immense interest in the generation 
+                of the big picture of Sindhi literature.
               </p>
             </div>
           </div>
@@ -49,22 +50,15 @@ export default function AboutPage() {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Mission Section */}
+        {/* Objectives Section */}
         <section className="mb-16">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Our Mission</h2>
-            <p className="text-lg text-gray-600 max-w-4xl mx-auto">
-              SindhiSanchaya is dedicated to preserving, digitizing, and making accessible the vast treasure trove of Sindhi literature. 
-              We believe that language and literature are the soul of a culture, and our mission is to ensure that the rich heritage 
-              of Sindhi writing remains accessible to scholars, students, and literature enthusiasts worldwide.
-            </p>
+            <h2 className="text-3xl font-bold text-amber-900 mb-4">Objectives behind the Development of Sindhi Sanchaya</h2>
             <div className="mt-8 max-w-4xl mx-auto">
-              <div className="bg-blue-50 border-l-4 border-blue-400 p-6 rounded-r-lg">
-                <h3 className="text-lg font-semibold text-blue-900 mb-3">Our Vision</h3>
-                <p className="text-blue-800">
-                  To become the world's most comprehensive and accessible digital repository of Sindhi literature, 
-                  serving as a bridge between the rich cultural past and the digital future, ensuring that 
-                  Sindhi language and literature continue to thrive in the modern world.
+              <div className="bg-amber-50 border-l-4 border-amber-400 p-6 rounded-r-lg">
+                <p className="text-amber-800 text-lg leading-relaxed">
+                  The objective of this project is to create a space for making the history of Sindhi literature in India accessible. 
+                  Sindhi Sanchaya is a step in this direction.
                 </p>
               </div>
             </div>
@@ -72,26 +66,26 @@ export default function AboutPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="bg-white rounded-lg shadow-md p-6 text-center">
-              <BookOpen className="w-12 h-12 text-blue-600 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Preservation</h3>
-              <p className="text-gray-600">
-                Digitizing rare and valuable Sindhi texts to prevent their loss and ensure their survival for future generations.
+              <BookOpen className="w-12 h-12 text-amber-600 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold text-amber-900 mb-2">Consolidation</h3>
+              <p className="text-amber-700">
+                Consolidating scattered Sindhi literature resources from various websites and archives into a single, accessible platform.
               </p>
             </div>
             
             <div className="bg-white rounded-lg shadow-md p-6 text-center">
-              <Globe className="w-12 h-12 text-green-600 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Accessibility</h3>
-              <p className="text-gray-600">
-                Making Sindhi literature accessible to a global audience through our comprehensive digital library platform.
+              <Globe className="w-12 h-12 text-orange-600 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold text-orange-900 mb-2">Accessibility</h3>
+              <p className="text-orange-700">
+                Making the history of Sindhi literature in India accessible to researchers, scholars, and literature enthusiasts.
               </p>
             </div>
             
             <div className="bg-white rounded-lg shadow-md p-6 text-center">
-              <Users className="w-12 h-12 text-purple-600 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Community</h3>
-              <p className="text-gray-600">
-                Building a community of scholars, researchers, and literature enthusiasts passionate about Sindhi culture.
+              <Users className="w-12 h-12 text-yellow-600 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold text-yellow-900 mb-2">Research Support</h3>
+              <p className="text-yellow-700">
+                Providing comprehensive metadata and resources to support further research in Sindhi literature and culture.
               </p>
             </div>
           </div>
@@ -100,7 +94,7 @@ export default function AboutPage() {
         {/* What We Offer Section */}
         <section className="mb-16">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">What We Offer</h2>
+            <h2 className="text-3xl font-bold text-amber-900 mb-4">What We Offer</h2>
             <p className="text-lg text-gray-600 max-w-4xl mx-auto">
               Our platform provides comprehensive access to Sindhi literature through innovative features and user-friendly design.
             </p>

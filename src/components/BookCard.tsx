@@ -6,6 +6,7 @@ import { ExternalLink, MapPin, User, Calendar, BookOpen, Sparkles } from 'lucide
 import SafeImage from './SafeImage';
 import BookDetailsModal from './BookDetailsModal';
 import { useAutoScrapeCover } from '@/hooks/useAutoScrapeCover';
+import MultiScriptText from './MultiScriptText';
 
 interface BookCardProps {
   book: Book;
@@ -143,12 +144,24 @@ export default function BookCard({ book }: BookCardProps) {
       {/* Book Details */}
       <div className="p-4">
         <h3 className="font-semibold text-lg text-gray-900 mb-2 line-clamp-2">
-          {getDisplayTitle()}
+          <MultiScriptText
+            titleEnglish={book.titleEnglish}
+            titleDevanagari={book.titleDevanagari}
+            titlePersoArabic={book.titlePersoArabic}
+            type="title"
+          />
         </h3>
         
         <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
           <User className="w-4 h-4" />
-          <span className="line-clamp-1">{getDisplayAuthor()}</span>
+          <span className="line-clamp-1">
+            <MultiScriptText
+              authorEnglish={book.authorEnglish}
+              authorDevanagari={book.authorDevanagari}
+              authorPersoArabic={book.authorPersoArabic}
+              type="author"
+            />
+          </span>
         </div>
 
         {book.collectionLocation && (

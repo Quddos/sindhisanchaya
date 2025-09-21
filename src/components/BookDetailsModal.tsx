@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Book } from '@/types';
 import { X, MapPin, Calendar, User, ExternalLink, Sparkles, Loader2 } from 'lucide-react';
+import MultiScriptText from './MultiScriptText';
 
 interface BookDetailsModalProps {
   book: Book;
@@ -100,10 +101,20 @@ export default function BookDetailsModal({ book, isOpen, onClose }: BookDetailsM
               }`}>
                 <div className="absolute inset-0 flex flex-col items-center justify-center text-white p-3">
                   <h3 className="text-sm font-bold text-center mb-1 leading-tight">
-                    {getDisplayTitle()}
+                    <MultiScriptText
+                      titleEnglish={book.titleEnglish}
+                      titleDevanagari={book.titleDevanagari}
+                      titlePersoArabic={book.titlePersoArabic}
+                      type="title"
+                    />
                   </h3>
                   <p className="text-xs text-center opacity-90">
-                    {getDisplayAuthor()}
+                    <MultiScriptText
+                      authorEnglish={book.authorEnglish}
+                      authorDevanagari={book.authorDevanagari}
+                      authorPersoArabic={book.authorPersoArabic}
+                      type="author"
+                    />
                   </p>
                 </div>
                 {book.availableOnline && (
@@ -172,7 +183,14 @@ export default function BookDetailsModal({ book, isOpen, onClose }: BookDetailsM
                     <User className="w-5 h-5 text-gray-400 mt-0.5" />
                     <div>
                       <p className="text-sm text-gray-500">Author</p>
-                      <p className="font-medium">{getDisplayAuthor()}</p>
+                      <p className="font-medium">
+                        <MultiScriptText
+                          authorEnglish={book.authorEnglish}
+                          authorDevanagari={book.authorDevanagari}
+                          authorPersoArabic={book.authorPersoArabic}
+                          type="author"
+                        />
+                      </p>
                     </div>
                   </div>
                   

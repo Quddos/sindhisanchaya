@@ -1,0 +1,35 @@
+<svg width="192" height="192" viewBox="0 0 192 192" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="lightBrown" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#D2B48C;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#BC9A6A;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="darkBrown" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8B4513;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#654321;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="192" height="192" fill="#8B4513" rx="20"/>
+  
+  <!-- Stacked Documents/Books Icon -->
+  <!-- Background document (darkest brown) -->
+  <rect x="48" y="48" width="80" height="100" fill="url(#darkBrown)" rx="10" transform="rotate(5 88 98)"/>
+  
+  <!-- Middle document (light brown) -->
+  <rect x="24" y="24" width="80" height="100" fill="url(#lightBrown)" rx="10" transform="rotate(-3 64 74)"/>
+  
+  <!-- Front document (white) -->
+  <rect x="0" y="0" width="80" height="100" fill="white" rx="10"/>
+  
+  <!-- Document lines -->
+  <g transform="translate(20, 20)">
+    <line x1="10" y1="10" x2="55" y2="10" stroke="#E5E5E5" stroke-width="3"/>
+    <line x1="10" y1="20" x2="50" y2="20" stroke="#E5E5E5" stroke-width="3"/>
+    <line x1="10" y1="30" x2="60" y2="30" stroke="#E5E5E5" stroke-width="3"/>
+    <line x1="10" y1="40" x2="45" y2="40" stroke="#E5E5E5" stroke-width="3"/>
+    <line x1="10" y1="50" x2="55" y2="50" stroke="#E5E5E5" stroke-width="3"/>
+    <line x1="10" y1="60" x2="40" y2="60" stroke="#E5E5E5" stroke-width="3"/>
+  </g>
+</svg>

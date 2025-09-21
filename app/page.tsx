@@ -25,13 +25,29 @@ export default function Home() {
 
   const fetchStats = async () => {
     try {
-      const response = await fetch('/api/stats');
+      const response = await fetch('/api/stats', {
+        // Add timeout to prevent hanging
+        signal: AbortSignal.timeout(10000)
+      });
       if (response.ok) {
         const data = await response.json();
         setStats(data);
+      } else {
+        // Set fallback stats if API fails
+        setStats({
+          totalBooks: 40000,
+          onlineBooks: 15000,
+          collections: 25,
+        });
       }
     } catch (error) {
       console.error('Failed to fetch stats:', error);
+      // Set fallback stats on error
+      setStats({
+        totalBooks: 40000,
+        onlineBooks: 15000,
+        collections: 25,
+      });
     }
   };
 
@@ -50,13 +66,35 @@ export default function Home() {
       params.append('page', page.toString());
       params.append('limit', '20');
 
-      const response = await fetch(`/api/search?${params.toString()}`);
+      const response = await fetch(`/api/search?${params.toString()}`, {
+        // Add timeout to prevent hanging
+        signal: AbortSignal.timeout(15000)
+      });
       if (response.ok) {
         const data = await response.json();
         setSearchResults(data);
+      } else {
+        // Set empty results if API fails
+        setSearchResults({
+          books: [],
+          total: 0,
+          page: 1,
+          limit: 20,
+          hasMore: false,
+          fuzzy: false,
+        });
       }
     } catch (error) {
       console.error('Search failed:', error);
+      // Set empty results on error
+      setSearchResults({
+        books: [],
+        total: 0,
+        page: 1,
+        limit: 20,
+        hasMore: false,
+        fuzzy: false,
+      });
     } finally {
       setLoading(false);
     }
@@ -67,9 +105,9 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-50">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b">
+      <header className="bg-white shadow-sm border-b border-amber-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           {/* Navigation */}
           <nav className="flex justify-between items-center mb-6">
@@ -79,33 +117,33 @@ export default function Home() {
               </Link>
             </div>
             <div className="flex items-center space-x-6">
-              <Link href="/about" className="text-gray-600 hover:text-blue-600 transition-colors">
+              <Link href="/about" className="text-amber-700 hover:text-amber-900 transition-colors">
                 About
               </Link>
-              <Link href="/copyright" className="text-gray-600 hover:text-blue-600 transition-colors">
+              <Link href="/copyright" className="text-amber-700 hover:text-amber-900 transition-colors">
                 Copyright
               </Link>
             </div>
           </nav>
           <div className="text-center">
-            <h1 className="text-4xl font-bold text-gray-900 mb-2">
+            <h1 className="text-4xl font-bold text-amber-900 mb-2">
               SindhiSanchaya
             </h1>
-            <p className="text-lg text-gray-600 mb-6">
+            <p className="text-lg text-amber-700 mb-6">
               Discover and explore the rich collection of Sindhi literature
             </p>
             
             {/* Animated Digital Archive Description */}
             <div className="max-w-4xl mx-auto mb-8">
-              <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-6 border border-blue-200">
+              <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-lg p-6 border border-amber-200">
                 <div className="flex items-center justify-center mb-4">
-                  <Archive className="w-8 h-8 text-blue-600 mr-3 animate-pulse" />
-                  <h2 className="text-2xl font-bold text-gray-800">Digital Literature Archive</h2>
+                  <Archive className="w-8 h-8 text-amber-600 mr-3 animate-pulse" />
+                  <h2 className="text-2xl font-bold text-amber-800">Digital Literature Archive</h2>
                 </div>
                 <div className="text-center space-y-3">
-                  <p className="text-gray-700 text-lg leading-relaxed">
+                  <p className="text-amber-700 text-lg leading-relaxed">
                     Welcome to the world&apos;s most comprehensive digital archive of Sindhi literature. 
-                    Our platform brings together <span className="font-semibold text-blue-600">40,000+ books</span> from 
+                    Our platform brings together <span className="font-semibold text-amber-600">40,000+ books</span> from 
                     classical poetry to modern prose, spanning centuries of literary excellence.
                   </p>
                   <div className="flex flex-nowrap justify-center gap-2 sm:gap-4 mt-4 overflow-x-auto">
@@ -128,25 +166,25 @@ export default function Home() {
             
             {/* Stats */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto">
-              <div className="bg-blue-50 rounded-lg p-4">
-                <BookOpen className="w-8 h-8 text-blue-600 mx-auto mb-2" />
-                <div className="text-2xl font-bold text-blue-900">{stats.totalBooks.toLocaleString()}</div>
-                <div className="text-sm text-blue-700">Total Books</div>
-              </div>
-              <div className="bg-green-50 rounded-lg p-4">
-                <Globe className="w-8 h-8 text-green-600 mx-auto mb-2" />
-                <div className="text-2xl font-bold text-green-900">{stats.onlineBooks.toLocaleString()}</div>
-                <div className="text-sm text-green-700">Online Books</div>
-              </div>
-              <div className="bg-purple-50 rounded-lg p-4">
-                <MapPin className="w-8 h-8 text-purple-600 mx-auto mb-2" />
-                <div className="text-2xl font-bold text-purple-900">{stats.collections}</div>
-                <div className="text-sm text-purple-700">Collections</div>
+              <div className="bg-amber-50 rounded-lg p-4">
+                <BookOpen className="w-8 h-8 text-amber-600 mx-auto mb-2" />
+                <div className="text-2xl font-bold text-amber-900">{stats.totalBooks.toLocaleString()}</div>
+                <div className="text-sm text-amber-700">Total Books</div>
               </div>
               <div className="bg-orange-50 rounded-lg p-4">
-                <Users className="w-8 h-8 text-orange-600 mx-auto mb-2" />
-                <div className="text-2xl font-bold text-orange-900">500+</div>
-                <div className="text-sm text-orange-700">Authors</div>
+                <Globe className="w-8 h-8 text-orange-600 mx-auto mb-2" />
+                <div className="text-2xl font-bold text-orange-900">{stats.onlineBooks.toLocaleString()}</div>
+                <div className="text-sm text-orange-700">Online Books</div>
+              </div>
+              <div className="bg-yellow-50 rounded-lg p-4">
+                <MapPin className="w-8 h-8 text-yellow-600 mx-auto mb-2" />
+                <div className="text-2xl font-bold text-yellow-900">{stats.collections}</div>
+                <div className="text-sm text-yellow-700">Collections</div>
+              </div>
+              <div className="bg-amber-100 rounded-lg p-4">
+                <Users className="w-8 h-8 text-amber-700 mx-auto mb-2" />
+                <div className="text-2xl font-bold text-amber-800">500+</div>
+                <div className="text-sm text-amber-600">Authors</div>
               </div>
             </div>
           </div>
@@ -181,7 +219,7 @@ export default function Home() {
                 </div>
                 
                 {/* Pagination */}
-                {searchResults.total > 20 && (
+                {searchResults.total > 0 && (
                   <div className="mt-8 flex justify-center">
                     <div className="flex items-center space-x-2">
                       {/* First Page */}
@@ -216,7 +254,7 @@ export default function Home() {
                               onClick={() => handlePageChange(i)}
                               className={`px-3 py-2 text-sm font-medium border ${
                                 i === currentPage
-                                  ? 'text-blue-600 bg-blue-50 border-blue-300'
+                                  ? 'text-amber-600 bg-amber-50 border-amber-300'
                                   : 'text-gray-500 bg-white border-gray-300 hover:bg-gray-50'
                               }`}
                             >
@@ -263,7 +301,7 @@ export default function Home() {
           <div className="mt-12 text-center">
             <button
               onClick={() => handleSearch({}, 1)}
-              className="bg-blue-600 text-white px-8 py-3 rounded-lg text-lg font-medium hover:bg-blue-700 transition-colors"
+              className="bg-amber-600 text-white px-8 py-3 rounded-lg text-lg font-medium hover:bg-amber-700 transition-colors"
             >
               Browse All Books ({stats.totalBooks.toLocaleString()})
             </button>

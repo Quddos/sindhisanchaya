@@ -76,27 +76,20 @@ export function fuzzySearch(query: string, text: string, threshold: number = 0.6
 export function generateSearchTerms(query: string): string[] {
   const terms = [query];
   
-  // Add variations
-  const words = query.split(' ');
+  // Only add meaningful variations for better accuracy
+  const words = query.split(' ').filter(word => word.length > 2);
   
-  // Add partial words (for autocomplete-like behavior)
-  words.forEach(word => {
-    if (word.length > 2) {
-      for (let i = 3; i <= word.length; i++) {
-        terms.push(word.substring(0, i));
-      }
-    }
-  });
-  
-  // Add common variations
-  const variations = [
-    query.replace(/s$/, ''), // Remove plural
-    query + 's', // Add plural
-    query.replace(/ing$/, ''), // Remove -ing
-    query + 'ing', // Add -ing
-  ];
-  
-  terms.push(...variations);
+  // Add word variations only for longer queries
+  if (query.length > 3) {
+    words.forEach(word => {
+      // Add common variations only
+      const variations = [
+        word.replace(/s$/, ''), // Remove plural
+        word + 's', // Add plural
+      ];
+      terms.push(...variations);
+    });
+  }
   
   return [...new Set(terms)]; // Remove duplicates
 }
@@ -132,19 +125,27 @@ export function buildSearchQuery(options: SearchOptions): Record<string, unknown
   
   where.OR = [];
   
-  // Add search conditions for each term
+  // Add search conditions for each term - prioritize title and author fields
   searchTerms.forEach(term => {
     const termConditions = [
+      // Primary fields (highest priority)
       { titleEnglish: { contains: term, mode: 'insensitive' } },
       { titleDevanagari: { contains: term, mode: 'insensitive' } },
       { titlePersoArabic: { contains: term, mode: 'insensitive' } },
       { authorEnglish: { contains: term, mode: 'insensitive' } },
       { authorDevanagari: { contains: term, mode: 'insensitive' } },
       { authorPersoArabic: { contains: term, mode: 'insensitive' } },
+      // Secondary fields (lower priority)
       { collectionLocation: { contains: term, mode: 'insensitive' } },
-      { otherDetails: { contains: term, mode: 'insensitive' } },
-      { searchVector: { contains: term, mode: 'insensitive' } },
     ];
+    
+    // Only include otherDetails and searchVector for longer, more specific queries
+    if (term.length > 3) {
+      termConditions.push(
+        { otherDetails: { contains: term, mode: 'insensitive' } },
+        { searchVector: { contains: term, mode: 'insensitive' } }
+      );
+    }
     
     where.OR.push(...termConditions);
   });

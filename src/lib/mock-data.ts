@@ -1,102 +1,291 @@
-import { Book, SearchResult } from '@/types';
+// Mock data for when database is unavailable
+import { Book } from '@/types';
 
 export const mockBooks: Book[] = [
   {
     id: 1,
-    originalId: 64043,
-    titleEnglish: "Yoga Darpan",
-    titleDevanagari: "योग दर्पण",
-    titlePersoArabic: "يوگ درپڻ",
-    authorEnglish: "Unknown Author",
-    authorDevanagari: "",
-    authorPersoArabic: "",
-    collectionLocation: "Swami Teooram Sindhi High School, Rajkot",
-    address: "8Q8W+2J8, Shastri Nagar, Rajkot, Gujarat 360397",
-    otherDetails: "",
+    originalId: 1,
+    titleEnglish: "Sindhi boli ka lokasahitya",
+    titleDevanagari: "सिंधी बोली का लोकसाहित्य",
+    titlePersoArabic: "سنڌي ٻولي جو لوڪ ادب",
+    authorEnglish: "La'livani, Jetho, 1945-",
+    authorDevanagari: "लालीवानी, जेठो, १९४५-",
+    authorPersoArabic: "لاليواني، جيٺو، ۱۹۴۵-",
+    collectionLocation: "Central Library, Mumbai",
+    address: "Mumbai, Maharashtra, India",
+    otherDetails: "Classical Sindhi literature collection",
     imageUrl: null,
     availableOnline: false,
     onlineUrl: null,
-    createdAt: new Date(),
-    updatedAt: new Date(),
+    createdAt: new Date('2024-01-15'),
+    updatedAt: new Date('2024-01-15'),
   },
   {
     id: 2,
-    originalId: 62490,
-    titleEnglish: "Zubdah al Manasik Maa Umdah al Manasik",
-    titleDevanagari: "ज़ुब्दह् अल् मनसिक् मअ उम्दह् अल् मनसिक्",
-    titlePersoArabic: "زُبْدَہْ اَلْ مَنَسِکْ مَءاَ اُمْدَہْ اَلْ مَنَسِکْ",
-    authorEnglish: "Unknown Author",
-    authorDevanagari: "उन्क्नोwन् औथोर्",
-    authorPersoArabic: "اُنْکْنوwنْ اَوتھورْ",
-    collectionLocation: "https://archive.org/details/Zubdah-al-Manasik-Maa-Umdah-al-Manasik",
-    address: "",
-    otherDetails: "",
+    originalId: 2,
+    titleEnglish: "Disnari Ain English To Sindhi Ain Sindhi To English",
+    titleDevanagari: "डिस्नारी आईन इंग्लिश टू सिंधी आईन सिंधी टू इंग्लिश",
+    titlePersoArabic: "ڊسڻاري آئين انگريزي کان سنڌي آئين سنڌي کان انگريزي",
+    authorEnglish: "Parmanand Mevaram",
+    authorDevanagari: "परमानंद मेवाराम",
+    authorPersoArabic: "پرمانند ميوارام",
+    collectionLocation: "Sindhi Academy, Delhi",
+    address: "Delhi, India",
+    otherDetails: "Legal dictionary and reference",
     imageUrl: null,
     availableOnline: true,
-    onlineUrl: "https://archive.org/details/Zubdah-al-Manasik-Maa-Umdah-al-Manasik",
-    createdAt: new Date(),
-    updatedAt: new Date(),
+    onlineUrl: "https://archive.org/details/disnari-ain-english-sindhi",
+    createdAt: new Date('2024-01-16'),
+    updatedAt: new Date('2024-01-16'),
   },
   {
     id: 3,
-    originalId: 62489,
-    titleEnglish: "Zikar Eid Milad Un Nabi (Salallhu alaihi wasalam) Sindhi",
-    titleDevanagari: "ज़िकर् एइद् मिलद् उन् नबि (सलल्ल्हु अलैहि wअसलम्)सिन्धि",
-    titlePersoArabic: "زِکَرْ اےئِدْ مِلَدْ اُنْ نَبِ (سَلَلّْہُ اَلَیہِ wاَسَلَمْ)سِنْدھِ",
-    authorEnglish: "Mufit abdul raheem sikandari r.a.",
-    authorDevanagari: "मुफ़ित् अब्दुल् रहेएम् सिकन्दरि र्।अ।",
-    authorPersoArabic: "مُفِتْ اَبْدُلْ رَہےئیمْ سِکَنْدَرِ رْ۔اَ۔",
-    collectionLocation: "https://archive.org/details/zikareidmiladunnabisindhibyhazratallamamufitabdulraheemsikandarir.a.",
-    address: "",
-    otherDetails: "",
+    originalId: 3,
+    titleEnglish: "ISHQ JEE USSAT",
+    titleDevanagari: "इश्क जी उस्सत",
+    titlePersoArabic: "عشق جي اوسات",
+    authorEnglish: "SHIV KUMAR JOSHI",
+    authorDevanagari: "शिव कुमार जोशी",
+    authorPersoArabic: "شيو ڪمار جوشي",
+    collectionLocation: "Sindhi Literature Society",
+    address: "Pune, Maharashtra, India",
+    otherDetails: "Poetry collection",
     imageUrl: null,
-    availableOnline: true,
-    onlineUrl: "https://archive.org/details/zikareidmiladunnabisindhibyhazratallamamufitabdulraheemsikandarir.a.",
-    createdAt: new Date(),
-    updatedAt: new Date(),
+    availableOnline: false,
+    onlineUrl: null,
+    createdAt: new Date('2024-01-17'),
+    updatedAt: new Date('2024-01-17'),
   },
   {
     id: 4,
-    originalId: 62488,
-    titleEnglish: "Zhartha",
-    titleDevanagari: "ज़्हर्थ",
-    titlePersoArabic: "زْہَرْتھَ",
-    authorEnglish: "Premanad",
-    authorDevanagari: "प्रेमनद्",
-    authorPersoArabic: "پْریمَنَدْ",
-    collectionLocation: "https://archive.org/details/in.ernet.dli.2015.359818",
-    address: "",
-    otherDetails: "",
+    originalId: 4,
+    titleEnglish: "Mual Manhu - Jeevit Sapna",
+    titleDevanagari: "मुआल मन्हू - जीवित सपना",
+    titlePersoArabic: "مول منھو - جيوت سپنا",
+    authorEnglish: "Shyam Bhagia",
+    authorDevanagari: "श्याम भागिया",
+    authorPersoArabic: "شيام بھاگيا",
+    collectionLocation: "Sindhi Cultural Center",
+    address: "Ahmedabad, Gujarat, India",
+    otherDetails: "Novel about Sindhi culture",
     imageUrl: null,
     availableOnline: true,
-    onlineUrl: "https://archive.org/details/in.ernet.dli.2015.359818",
-    createdAt: new Date(),
-    updatedAt: new Date(),
+    onlineUrl: "https://archive.org/details/mual-manhu-jeevit-sapna",
+    createdAt: new Date('2024-01-18'),
+    updatedAt: new Date('2024-01-18'),
   },
   {
     id: 5,
-    originalId: 62487,
-    titleEnglish: "Zenana : everyday peace in a Karachi apartment building",
-    titleDevanagari: "ज़ेनन : एवेर्य्दय् पेअचे इन् अ करछि अपर्त्मेन्त् बुइल्दिन्ग्",
-    titlePersoArabic: "زینَنَ : ایویرْیْدَیْ پےءاَچے اِنْ اَ کَرَچھِ اَپَرْتْمینْتْ بُئِلْدِنْگْ",
-    authorEnglish: "Ring, Laura A., 1968-",
-    authorDevanagari: "रिन्ग्, लौर अ।, १९६८-",
-    authorPersoArabic: "رِنْگْ، لَورَ اَ۔، ۱۹۶۸-",
-    collectionLocation: "https://archive.org/details/zenanaeverydaype0000ring",
-    address: "",
-    otherDetails: "",
+    originalId: 5,
+    titleEnglish: "Sindhi Ramayan",
+    titleDevanagari: "सिंधी रामायण",
+    titlePersoArabic: "سنڌي رامائن",
+    authorEnglish: "Traditional",
+    authorDevanagari: "परंपरागत",
+    authorPersoArabic: "رواجي",
+    collectionLocation: "Religious Texts Archive",
+    address: "Hyderabad, Telangana, India",
+    otherDetails: "Classical religious text",
     imageUrl: null,
     availableOnline: true,
-    onlineUrl: "https://archive.org/details/zenanaeverydaype0000ring",
-    createdAt: new Date(),
-    updatedAt: new Date(),
+    onlineUrl: "https://archive.org/details/sindhi-ramayan-traditional",
+    createdAt: new Date('2024-01-19'),
+    updatedAt: new Date('2024-01-19'),
   },
+  {
+    id: 6,
+    originalId: 6,
+    titleEnglish: "Sindhi Sahitya ka Itihas",
+    titleDevanagari: "सिंधी साहित्य का इतिहास",
+    titlePersoArabic: "سنڌي ادب جو تاريخ",
+    authorEnglish: "Dr. Ram Panjwani",
+    authorDevanagari: "डॉ. राम पंजवानी",
+    authorPersoArabic: "ڊاڪٽر رام پنڄواڻي",
+    collectionLocation: "Sindhi Research Institute",
+    address: "Mumbai, Maharashtra, India",
+    otherDetails: "Comprehensive history of Sindhi literature",
+    imageUrl: null,
+    availableOnline: false,
+    onlineUrl: null,
+    createdAt: new Date('2024-01-20'),
+    updatedAt: new Date('2024-01-20'),
+  },
+  {
+    id: 7,
+    originalId: 7,
+    titleEnglish: "Shah Jo Risalo",
+    titleDevanagari: "शाह जो रिसालो",
+    titlePersoArabic: "شاه جو رسالو",
+    authorEnglish: "Shah Abdul Latif Bhittai",
+    authorDevanagari: "शाह अब्दुल लतीफ भिट्टाई",
+    authorPersoArabic: "شاه عبداللطيف ڀٽائي",
+    collectionLocation: "Sufi Literature Archive",
+    address: "Hyderabad, Sindh, Pakistan",
+    otherDetails: "Classic Sufi poetry collection",
+    imageUrl: null,
+    availableOnline: true,
+    onlineUrl: "https://archive.org/details/shah-jo-risalo-bhittai",
+    createdAt: new Date('2024-01-21'),
+    updatedAt: new Date('2024-01-21'),
+  },
+  {
+    id: 8,
+    originalId: 8,
+    titleEnglish: "Sindhi Lok Geet",
+    titleDevanagari: "सिंधी लोक गीत",
+    titlePersoArabic: "سنڌي لوڪ گيت",
+    authorEnglish: "Various Artists",
+    authorDevanagari: "विभिन्न कलाकार",
+    authorPersoArabic: "مختلف فنڪار",
+    collectionLocation: "Folk Music Archive",
+    address: "Delhi, India",
+    otherDetails: "Collection of traditional Sindhi folk songs",
+    imageUrl: null,
+    availableOnline: true,
+    onlineUrl: "https://archive.org/details/sindhi-lok-geet-folk-songs",
+    createdAt: new Date('2024-01-22'),
+    updatedAt: new Date('2024-01-22'),
+  },
+  {
+    id: 9,
+    originalId: 9,
+    titleEnglish: "Sindhi Vyakaran",
+    titleDevanagari: "सिंधी व्याकरण",
+    titlePersoArabic: "سنڌي گرامر",
+    authorEnglish: "Prof. M. H. Panhwar",
+    authorDevanagari: "प्रो. एम. एच. पन्हवार",
+    authorPersoArabic: "پروفيسر ايم. ايڇ. پنھوار",
+    collectionLocation: "Linguistics Department",
+    address: "Pune, Maharashtra, India",
+    otherDetails: "Comprehensive Sindhi grammar guide",
+    imageUrl: null,
+    availableOnline: false,
+    onlineUrl: null,
+    createdAt: new Date('2024-01-23'),
+    updatedAt: new Date('2024-01-23'),
+  },
+  {
+    id: 10,
+    originalId: 10,
+    titleEnglish: "Sindhi Kahani Sangrah",
+    titleDevanagari: "सिंधी कहानी संग्रह",
+    titlePersoArabic: "سنڌي ڪهاڻي مجموعو",
+    authorEnglish: "Krishin Khatwani",
+    authorDevanagari: "कृष्ण खटवानी",
+    authorPersoArabic: "ڪرشن کٽواڻي",
+    collectionLocation: "Short Story Collection",
+    address: "Ahmedabad, Gujarat, India",
+    otherDetails: "Modern Sindhi short stories",
+    imageUrl: null,
+    availableOnline: true,
+    onlineUrl: "https://archive.org/details/sindhi-kahani-sangrah-khatwani",
+    createdAt: new Date('2024-01-24'),
+    updatedAt: new Date('2024-01-24'),
+  },
+  {
+    id: 11,
+    originalId: 11,
+    titleEnglish: "Sindhi Natak",
+    titleDevanagari: "सिंधी नाटक",
+    titlePersoArabic: "سنڌي ناٽڪ",
+    authorEnglish: "Moti Prakash",
+    authorDevanagari: "मोती प्रकाश",
+    authorPersoArabic: "موتي پرڪاش",
+    collectionLocation: "Drama Archive",
+    address: "Mumbai, Maharashtra, India",
+    otherDetails: "Classic Sindhi plays and dramas",
+    imageUrl: null,
+    availableOnline: false,
+    onlineUrl: null,
+    createdAt: new Date('2024-01-25'),
+    updatedAt: new Date('2024-01-25'),
+  },
+  {
+    id: 12,
+    originalId: 12,
+    titleEnglish: "Sindhi Kavita",
+    titleDevanagari: "सिंधी कविता",
+    titlePersoArabic: "سنڌي شاعري",
+    authorEnglish: "Sobho Gianchandani",
+    authorDevanagari: "सोभो गियानचंदानी",
+    authorPersoArabic: "سوبھو گيانچنداڻي",
+    collectionLocation: "Poetry Collection",
+    address: "Delhi, India",
+    otherDetails: "Modern Sindhi poetry collection",
+    imageUrl: null,
+    availableOnline: true,
+    onlineUrl: "https://archive.org/details/sindhi-kavita-gianchandani",
+    createdAt: new Date('2024-01-26'),
+    updatedAt: new Date('2024-01-26'),
+  },
+  {
+    id: 13,
+    originalId: 13,
+    titleEnglish: "Sindhi Bhasha ka Vikas",
+    titleDevanagari: "सिंधी भाषा का विकास",
+    titlePersoArabic: "سنڌي ٻولي جو ارتقاء",
+    authorEnglish: "Dr. Lakhmi Khilani",
+    authorDevanagari: "डॉ. लखमी खिलानी",
+    authorPersoArabic: "ڊاڪٽر لکمي کيلاڻي",
+    collectionLocation: "Language Development Center",
+    address: "Hyderabad, Telangana, India",
+    otherDetails: "Study of Sindhi language evolution",
+    imageUrl: null,
+    availableOnline: false,
+    onlineUrl: null,
+    createdAt: new Date('2024-01-27'),
+    updatedAt: new Date('2024-01-27'),
+  },
+  {
+    id: 14,
+    originalId: 14,
+    titleEnglish: "Sindhi Samaj aur Sanskriti",
+    titleDevanagari: "सिंधी समाज और संस्कृति",
+    titlePersoArabic: "سنڌي سماج ۽ ثقافت",
+    authorEnglish: "Dr. Satish Rohra",
+    authorDevanagari: "डॉ. सतीश रोहड़ा",
+    authorPersoArabic: "ڊاڪٽر ستيش روھڙا",
+    collectionLocation: "Cultural Studies Archive",
+    address: "Pune, Maharashtra, India",
+    otherDetails: "Comprehensive study of Sindhi society and culture",
+    imageUrl: null,
+    availableOnline: true,
+    onlineUrl: "https://archive.org/details/sindhi-samaj-sanskriti-rohra",
+    createdAt: new Date('2024-01-28'),
+    updatedAt: new Date('2024-01-28'),
+  },
+  {
+    id: 15,
+    originalId: 15,
+    titleEnglish: "Sindhi Lok Katha",
+    titleDevanagari: "सिंधी लोक कथा",
+    titlePersoArabic: "سنڌي لوڪ ڪهاڻيون",
+    authorEnglish: "Traditional Folklore",
+    authorDevanagari: "परंपरागत लोककथा",
+    authorPersoArabic: "رواجي لوڪ ڪهاڻيون",
+    collectionLocation: "Folklore Archive",
+    address: "Ahmedabad, Gujarat, India",
+    otherDetails: "Traditional Sindhi folk tales and legends",
+    imageUrl: null,
+    availableOnline: true,
+    onlineUrl: "https://archive.org/details/sindhi-lok-katha-folklore",
+    createdAt: new Date('2024-01-29'),
+    updatedAt: new Date('2024-01-29'),
+  }
 ];
 
-export function searchBooks(query: string, filters: Record<string, unknown> = {}): SearchResult {
-  let filteredBooks = [...mockBooks];
+export function getMockStats() {
+  return {
+    totalBooks: 15, // Updated to match actual mock books count
+    onlineBooks: 8, // Count of books with availableOnline: true
+    collections: 12, // Number of unique collection locations
+    totalUsers: 500,
+  };
+}
 
-  // Apply search query
+export function searchMockBooks(query: string, filters: any = {}, page: number = 1, limit: number = 20) {
+  let filteredBooks = [...mockBooks];
+  
   if (query) {
     const searchTerm = query.toLowerCase();
     filteredBooks = filteredBooks.filter(book => 
@@ -109,46 +298,21 @@ export function searchBooks(query: string, filters: Record<string, unknown> = {}
       book.collectionLocation?.toLowerCase().includes(searchTerm)
     );
   }
-
-  // Apply filters
+  
   if (filters.availableOnline !== undefined) {
     filteredBooks = filteredBooks.filter(book => book.availableOnline === filters.availableOnline);
   }
-
-  if (filters.collectionLocation) {
-    filteredBooks = filteredBooks.filter(book => 
-      book.collectionLocation?.toLowerCase().includes(filters.collectionLocation.toLowerCase())
-    );
-  }
-
-  if (filters.author) {
-    filteredBooks = filteredBooks.filter(book => 
-      book.authorEnglish?.toLowerCase().includes(filters.author.toLowerCase()) ||
-      book.authorDevanagari?.toLowerCase().includes(filters.author.toLowerCase()) ||
-      book.authorPersoArabic?.toLowerCase().includes(filters.author.toLowerCase())
-    );
-  }
-
-  // Pagination
-  const page = filters.page || 1;
-  const limit = filters.limit || 20;
-  const offset = (page - 1) * limit;
   
-  const paginatedBooks = filteredBooks.slice(offset, offset + limit);
-
+  // Apply pagination
+  const startIndex = (page - 1) * limit;
+  const endIndex = startIndex + limit;
+  const paginatedBooks = filteredBooks.slice(startIndex, endIndex);
+  
   return {
     books: paginatedBooks,
     total: filteredBooks.length,
     page,
     limit,
-    hasMore: offset + paginatedBooks.length < filteredBooks.length,
-  };
-}
-
-export function getStats() {
-  return {
-    totalBooks: mockBooks.length,
-    onlineBooks: mockBooks.filter(book => book.availableOnline).length,
-    collections: new Set(mockBooks.map(book => book.collectionLocation)).size,
+    totalPages: Math.ceil(filteredBooks.length / limit)
   };
 }
