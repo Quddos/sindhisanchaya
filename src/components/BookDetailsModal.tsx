@@ -68,8 +68,9 @@ export default function BookDetailsModal({ book, isOpen, onClose }: BookDetailsM
   };
 
   const openMapLocation = () => {
-    if (book.address) {
-      const encodedAddress = encodeURIComponent(book.address);
+    const location = book.address || book.collectionLocation;
+    if (location) {
+      const encodedAddress = encodeURIComponent(location);
       const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodedAddress}`;
       window.open(mapUrl, '_blank');
     }
@@ -143,7 +144,7 @@ export default function BookDetailsModal({ book, isOpen, onClose }: BookDetailsM
                   </a>
                 )}
                 
-                {!book.availableOnline && book.address && (
+                {!book.availableOnline && (book.address || book.collectionLocation) && (
                   <button
                     onClick={openMapLocation}
                     className="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 transition-colors flex items-center justify-center gap-2"

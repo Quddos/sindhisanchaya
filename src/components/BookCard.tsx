@@ -190,10 +190,11 @@ export default function BookCard({ book }: BookCardProps) {
             </a>
           )}
           
-          {!book.availableOnline && book.address && (
+          {!book.availableOnline && (book.address || book.collectionLocation) && (
             <button
               onClick={() => {
-                const encodedAddress = encodeURIComponent(book.address!);
+                const location = book.address || book.collectionLocation || '';
+                const encodedAddress = encodeURIComponent(location);
                 const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodedAddress}`;
                 window.open(mapUrl, '_blank');
               }}

@@ -6,21 +6,22 @@ import { buildSearchQuery } from '@/lib/search';
 import { searchMockBooks } from '@/lib/mock-data';
 
 export async function GET(request: NextRequest) {
-  try {
-    const { searchParams } = new URL(request.url);
-    
-    const filters: SearchFilters = {
-      query: searchParams.get('q') || undefined,
-      script: (searchParams.get('script') as 'english' | 'devanagari' | 'perso-arabic' | 'all') || 'all',
-      availableOnline: searchParams.get('online') ? searchParams.get('online') === 'true' : undefined,
-      collectionLocation: searchParams.get('location') || undefined,
-      author: searchParams.get('author') || undefined,
-    };
+  const { searchParams } = new URL(request.url);
+  
+  const filters: SearchFilters = {
+    query: searchParams.get('q') || undefined,
+    script: (searchParams.get('script') as 'english' | 'devanagari' | 'perso-arabic' | 'all') || 'all',
+    availableOnline: searchParams.get('online') ? searchParams.get('online') === 'true' : undefined,
+    collectionLocation: searchParams.get('location') || undefined,
+    author: searchParams.get('author') || undefined,
+  };
 
-    const page = parseInt(searchParams.get('page') || '1');
-    const limit = Math.min(parseInt(searchParams.get('limit') || '20'), 100); // Cap at 100 to prevent memory issues
-    const offset = (page - 1) * limit;
-    const fuzzy = searchParams.get('fuzzy') === 'true';
+  const page = parseInt(searchParams.get('page') || '1');
+  const limit = Math.min(parseInt(searchParams.get('limit') || '20'), 100); // Cap at 100 to prevent memory issues
+  const offset = (page - 1) * limit;
+  const fuzzy = searchParams.get('fuzzy') === 'true';
+
+  try {
 
     // Enhance search query with AI only for longer, more complex queries
     let enhancedQuery = filters.query;
