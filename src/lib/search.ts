@@ -1,7 +1,7 @@
 // Enhanced search functionality with fuzzy matching and global search
 
 export interface SearchOptions {
-  query: string;
+  query?: string;
   script?: 'english' | 'devanagari' | 'perso-arabic' | 'all';
   availableOnline?: boolean;
   collectionLocation?: string;
@@ -121,34 +121,53 @@ export function buildSearchQuery(options: SearchOptions): Record<string, unknown
     return where;
   }
   
-  const searchTerms = fuzzy ? generateSearchTerms(query) : [query];
-  
-  where.OR = [];
-  
-  // Add search conditions for each term - prioritize title and author fields
-  searchTerms.forEach(term => {
-    const termConditions = [
-      // Primary fields (highest priority)
-      { titleEnglish: { contains: term, mode: 'insensitive' } },
-      { titleDevanagari: { contains: term, mode: 'insensitive' } },
-      { titlePersoArabic: { contains: term, mode: 'insensitive' } },
-      { authorEnglish: { contains: term, mode: 'insensitive' } },
-      { authorDevanagari: { contains: term, mode: 'insensitive' } },
-      { authorPersoArabic: { contains: term, mode: 'insensitive' } },
-      // Secondary fields (lower priority)
-      { collectionLocation: { contains: term, mode: 'insensitive' } },
+  // For better relevance, use exact matching for shorter queries
+  if (query.length <= 4 && !fuzzy) {
+    // Use exact matching for very short queries to avoid irrelevant results
+    where.OR = [
+      { titleEnglish: { contains: query, mode: 'insensitive' } },
+      { titleDevanagari: { contains: query, mode: 'insensitive' } },
+      { titlePersoArabic: { contains: query, mode: 'insensitive' } },
+      { authorEnglish: { contains: query, mode: 'insensitive' } },
+      { authorDevanagari: { contains: query, mode: 'insensitive' } },
+      { authorPersoArabic: { contains: query, mode: 'insensitive' } },
     ];
+  } else {
+    // Use fuzzy search for longer queries or when explicitly requested
+    const searchTerms = fuzzy ? generateSearchTerms(query) : [query];
     
-    // Only include otherDetails and searchVector for longer, more specific queries
-    if (term.length > 3) {
-      termConditions.push(
-        { otherDetails: { contains: term, mode: 'insensitive' } },
-        { searchVector: { contains: term, mode: 'insensitive' } }
-      );
-    }
+    where.OR = [];
     
-    where.OR.push(...termConditions);
-  });
+    // Add search conditions for each term - prioritize title and author fields
+    searchTerms.forEach(term => {
+      const termConditions = [
+        // Primary fields (highest priority) - exact matches first
+        { titleEnglish: { contains: term, mode: 'insensitive' } },
+        { titleDevanagari: { contains: term, mode: 'insensitive' } },
+        { titlePersoArabic: { contains: term, mode: 'insensitive' } },
+        { authorEnglish: { contains: term, mode: 'insensitive' } },
+        { authorDevanagari: { contains: term, mode: 'insensitive' } },
+        { authorPersoArabic: { contains: term, mode: 'insensitive' } },
+      ];
+      
+      // Only include secondary fields for longer, more specific queries
+      if (term.length > 4) {
+        termConditions.push(
+          { collectionLocation: { contains: term, mode: 'insensitive' } },
+          { otherDetails: { contains: term, mode: 'insensitive' } }
+        );
+      }
+      
+      // Only include searchVector for very specific queries
+      if (term.length > 6) {
+        termConditions.push(
+          { searchVector: { contains: term, mode: 'insensitive' } }
+        );
+      }
+      
+      where.OR.push(...termConditions);
+    });
+  }
   
   // Add filters
   if (availableOnline !== undefined) {

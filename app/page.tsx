@@ -25,29 +25,13 @@ export default function Home() {
 
   const fetchStats = async () => {
     try {
-      const response = await fetch('/api/stats', {
-        // Add timeout to prevent hanging
-        signal: AbortSignal.timeout(10000)
-      });
+      const response = await fetch('/api/stats');
       if (response.ok) {
         const data = await response.json();
         setStats(data);
-      } else {
-        // Set fallback stats if API fails
-        setStats({
-          totalBooks: 40000,
-          onlineBooks: 15000,
-          collections: 25,
-        });
       }
     } catch (error) {
       console.error('Failed to fetch stats:', error);
-      // Set fallback stats on error
-      setStats({
-        totalBooks: 40000,
-        onlineBooks: 15000,
-        collections: 25,
-      });
     }
   };
 
@@ -66,35 +50,13 @@ export default function Home() {
       params.append('page', page.toString());
       params.append('limit', '20');
 
-      const response = await fetch(`/api/search?${params.toString()}`, {
-        // Add timeout to prevent hanging
-        signal: AbortSignal.timeout(15000)
-      });
+      const response = await fetch(`/api/search?${params.toString()}`);
       if (response.ok) {
         const data = await response.json();
         setSearchResults(data);
-      } else {
-        // Set empty results if API fails
-        setSearchResults({
-          books: [],
-          total: 0,
-          page: 1,
-          limit: 20,
-          hasMore: false,
-          fuzzy: false,
-        });
       }
     } catch (error) {
       console.error('Search failed:', error);
-      // Set empty results on error
-      setSearchResults({
-        books: [],
-        total: 0,
-        page: 1,
-        limit: 20,
-        hasMore: false,
-        fuzzy: false,
-      });
     } finally {
       setLoading(false);
     }
@@ -113,7 +75,7 @@ export default function Home() {
           <nav className="flex justify-between items-center mb-6">
             <div className="flex items-center space-x-8">
               <Link href="/" className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
-                <img src="/logo.svg" alt="SindhiSanchaya" className="h-8" />
+                <img src="/logo.svg" alt="SindhiSanchaya" className="h-12" />
               </Link>
             </div>
             <div className="flex items-center space-x-6">

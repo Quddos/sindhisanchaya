@@ -283,6 +283,19 @@ export function getMockStats() {
   };
 }
 
+export function getMockCollections() {
+  const uniqueLocations = [...new Set(mockBooks.map(book => book.collectionLocation).filter(Boolean))];
+  return uniqueLocations.map((location, index) => ({
+    id: index + 1,
+    name: location,
+    location: location,
+    address: mockBooks.find(book => book.collectionLocation === location)?.address || '',
+    description: `Collection of Sindhi literature at ${location}`,
+    createdAt: new Date('2024-01-01'),
+    updatedAt: new Date('2024-01-01'),
+  }));
+}
+
 export function searchMockBooks(query: string, filters: any = {}, page: number = 1, limit: number = 20) {
   let filteredBooks = [...mockBooks];
   

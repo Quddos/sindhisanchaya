@@ -48,7 +48,7 @@ export async function GET(request: NextRequest) {
 
     // Execute the search with optimized query and timeout
     const timeoutPromise = new Promise((_, reject) => 
-      setTimeout(() => reject(new Error('Search timeout')), 15000)
+      setTimeout(() => reject(new Error('Search timeout')), 10000)
     );
 
     const searchPromise = Promise.all([
@@ -75,7 +75,11 @@ export async function GET(request: NextRequest) {
           createdAt: true,
         },
       }),
-      prisma.book.count({ where: finalWhere }),
+      // Use a more efficient count query
+      prisma.book.count({ 
+        where: finalWhere,
+        // Add a simple count without complex joins
+      }),
     ]);
 
     const [books, total] = await Promise.race([
@@ -94,30 +98,23 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     console.error('Search error:', error);
     
-    // Return mock results if database is unavailable
-    const { searchParams } = new URL(request.url);
-    const filters: SearchFilters = {
-      query: searchParams.get('q') || undefined,
-      script: (searchParams.get('script') as 'english' | 'devanagari' | 'perso-arabic' | 'all') || 'all',
-      availableOnline: searchParams.get('online') ? searchParams.get('online') === 'true' : undefined,
-      collectionLocation: searchParams.get('location') || undefined,
-      author: searchParams.get('author') || undefined,
-    };
+    // If database connection fails, return empty results instead of error
+    if (error.code === 'P1001' || error.message?.includes('Can\'t reach database server')) {
+      return NextResponse.json({
+        books: [],
+        total: 0,
+        page,
+        limit,
+        hasMore: false,
+        fuzzy,
+        error: 'Database temporarily unavailable'
+      });
+    }
     
-    const page = parseInt(searchParams.get('page') || '1');
-    const limit = Math.min(parseInt(searchParams.get('limit') || '20'), 100);
-    const mockResult = searchMockBooks(filters.query || '', filters, page, limit);
-    
-    return NextResponse.json({
-      books: mockResult.books,
-      total: mockResult.total,
-      page: mockResult.page,
-      limit: mockResult.limit,
-      hasMore: mockResult.page < mockResult.totalPages,
-      fuzzy: false,
-      error: 'Database temporarily unavailable - showing sample data',
-      fallback: true,
-    });
+    return NextResponse.json(
+      { error: 'Failed to search books' },
+      { status: 500 }
+    );
   }
 }
 

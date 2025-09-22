@@ -4,29 +4,18 @@ import { scrapeBookCover, validateImageUrl } from '@/lib/bookCoverScraper';
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const bookId = parseInt(params.id);
+    const { id } = await params;
+    const bookId = parseInt(id);
     if (isNaN(bookId)) {
       return NextResponse.json({ error: 'Invalid book ID' }, { status: 400 });
     }
 
-    let book;
-    try {
-      book = await prisma.book.findUnique({
-        where: { id: bookId },
-      });
-    } catch (dbError) {
-      console.error('Database error, using fallback:', dbError);
-      // If database is unavailable, try to get book from mock data
-      const { mockBooks } = await import('@/lib/mock-data');
-      book = mockBooks.find(b => b.id === bookId);
-      
-      if (!book) {
-        return NextResponse.json({ error: 'Book not found' }, { status: 404 });
-      }
-    }
+    const book = await prisma.book.findUnique({
+      where: { id: bookId },
+    });
 
     if (!book) {
       return NextResponse.json({ error: 'Book not found' }, { status: 404 });
@@ -56,27 +45,17 @@ export async function POST(
       }, { status: 404 });
     }
 
-    // Try to update the book with the scraped cover
-    try {
-      const updatedBook = await prisma.book.update({
-        where: { id: bookId },
-        data: { imageUrl: scrapeResult.imageUrl },
-      });
+    // Update the book with the scraped cover
+    const updatedBook = await prisma.book.update({
+      where: { id: bookId },
+      data: { imageUrl: scrapeResult.imageUrl },
+    });
 
-      return NextResponse.json({
-        success: true,
-        imageUrl: updatedBook.imageUrl,
-        message: 'Cover scraped and updated successfully'
-      });
-    } catch (updateError) {
-      console.error('Database update error, returning scraped image:', updateError);
-      // If we can't update the database, just return the scraped image
-      return NextResponse.json({
-        success: true,
-        imageUrl: scrapeResult.imageUrl,
-        message: 'Cover scraped successfully (database update failed)'
-      });
-    }
+    return NextResponse.json({
+      success: true,
+      imageUrl: updatedBook.imageUrl,
+      message: 'Cover scraped and updated successfully'
+    });
   } catch (error) {
     console.error('Cover scraping error:', error);
     return NextResponse.json(
